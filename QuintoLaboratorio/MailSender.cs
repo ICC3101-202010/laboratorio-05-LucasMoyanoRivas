@@ -7,16 +7,27 @@ namespace QuintoLaboratorio
 {
     public class MailSender
     {
-        public void OnEmailSent(object source, EmailSentEventArgs e)
+        public delegate void EmailSentEventHandler(object source, EventArgs args);
+        public event EmailSentEventHandler EmailSent;
+        protected virtual void OnEmailSent()
+        {
+            if (EmailSent != null)
+            {
+                EmailSent(this, EventArgs.Empty);
+            }
+     
+        }
+        public void OnEmailSent(object source, EventArgs e)
         {
             Thread.Sleep(2000);
-            Console.WriteLine($"\nCorreo enviado a {e.Email}: \n Correo verificado con exito! Muchas Gracias {e.Username}! Disfrute de su cuenta\n");
+            Console.WriteLine($"Correo verificado con exito! Muchas Gracias! Disfrute de su cuenta\n");
             Thread.Sleep(2000);
         }
         public void OnRegistered(object source, RegisterEventArgs e)
         {
             Thread.Sleep(2000);
             Console.WriteLine($"\nCorreo enviado a {e.Email}: \n Gracias por registrarte, {e.Username}!\n Por favor, para poder verificar tu correo, has click en: {e.VerificationLink}\n");
+            OnEmailSent();
             Thread.Sleep(2000);
         }
 

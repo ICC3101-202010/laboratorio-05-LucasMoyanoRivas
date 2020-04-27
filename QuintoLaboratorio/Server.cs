@@ -38,16 +38,7 @@ namespace QuintoLaboratorio
                 PasswordChanged(this, new ChangePasswordEventArgs() { Username = username, Email = email, Number = number });
             }
         }
-        public delegate void EmailSentEventHandler(object source, EmailSentEventArgs args);
-        public event EmailSentEventHandler EmailSent;
-        protected virtual void OnEmailSent(string username, string email)
-        {
-            if (EmailSent != null)
-            {
-                EmailSent(this, new EmailSentEventArgs() { Username = username, Email = email });
-            }
 
-        }
         // Atributo BaseDatos
         public DataBase Data { get; }
 
@@ -78,7 +69,6 @@ namespace QuintoLaboratorio
             {
                 // Disparamos el evento
                 OnRegistered(usr, psswd, verificationlink: verificationLink, email: email);
-                OnEmailSent(usr, email);
             }
             else
             {
@@ -114,7 +104,12 @@ namespace QuintoLaboratorio
                 Console.WriteLine("[!] ERROR: " + result + "\n");
             }
         }
-
+        public void OnEmailVerified(object source, EventArgs e)
+        {
+            Thread.Sleep(2000);
+            Console.WriteLine($"\nCorreo verificado con exito! Muchas Gracias! Disfrute de su cuenta\n");
+            Thread.Sleep(2000);
+        }
         // Metodo que genera un link de verificacion, dado un usuario
         private string GenerateLink(string usr)
         {

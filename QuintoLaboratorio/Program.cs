@@ -13,6 +13,7 @@ namespace QuintoLaboratorio
             Server server = new Server(database);
             MailSender mailSender = new MailSender();
             SMSSender smsSender = new SMSSender();
+            User user = new User(database);
 
 
             //Suscribir los que escuchan los eventos
@@ -24,18 +25,23 @@ namespace QuintoLaboratorio
             server.PasswordChanged += mailSender.OnPasswordChanged;
             //3- Suscribir OnCambiadaContrasena de smsSender para que escuche el evento CambiadaContrasena enviado por servidor
             server.PasswordChanged += smsSender.OnPasswordChanged;
-            server.EmailSent += mailSender.OnEmailSent;
+            mailSender.EmailSent += mailSender.OnEmailSent;
+            user.EmailVerified += server.OnEmailVerified;
             // Controla la ejecucion mientras el usuario no quiera salir
             bool exec = true;
             while (exec)
             {
                 // Pedimos al usuario una de las opciones
-                string chosen = ShowOptions(new List<string>() { "Registrarse", "Cambiar contrasena", "Salir" });
+                string chosen = ShowOptions(new List<string>() { "Registrarse", "Verificar correo electronico", "Cambiar contrasena", "Salir" });
                 switch (chosen)
                 {
                     case "Registrarse":
                         Console.Clear();
                         server.Register();
+                        break;
+                    case "Verificar correo electronico":
+                        Console.Clear();
+                        user.OnEmailSent();
                         break;
                     case "Cambiar contrasena":
                         Console.Clear();
