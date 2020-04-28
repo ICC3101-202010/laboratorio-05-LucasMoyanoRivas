@@ -20,7 +20,7 @@ namespace QuintoLaboratorio
         public void OnEmailSent(object source, EventArgs e)
         {
             Thread.Sleep(2000);
-            Console.WriteLine($"Correo verificado con exito! Muchas Gracias! Disfrute de su cuenta\n");
+            Console.WriteLine($"Correo de verificación enviado con exito! Por favor verifique su cuenta\n");
             Thread.Sleep(2000);
         }
         public void OnRegistered(object source, RegisterEventArgs e)
